@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_now/services/location.dart';
-import 'package:weather_now/services/networking.dart';
+import 'package:weather_now/services/weather.dart';
 import 'package:weather_now/utilities/constants.dart';
 import 'package:weather_now/utilities/reusable_card.dart';
 import 'package:weather_now/services/networking.dart';
 import 'package:weather_now/services/location.dart';
 import 'package:weather_now/screens/location_screen.dart';
-
-const apiKey = '2a3a36caa17423720b8be129f0ec3072';
 
 // class LoadingScreen extends StatefulWidget {
 //   @override
@@ -65,17 +62,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationData() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    // latitude = location.latitude;
-    // longitude = location.longitude;
-    await location.getCurrentLocation();
-    NetworkAPI networkAPI = NetworkAPI('https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=-${location.longitude}&appid=$apiKey&units=metric');
-    var weatherData = await networkAPI.getData();
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen(locationWeather: weatherData,);
-    }));
-
+    var weatherData = await WeatherModel().getLocationWeather();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return LocationScreen(
+          locationWeather: weatherData,
+        );
+      }),
+    );
   }
 
   @override
@@ -92,11 +87,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
             SizedBox(height: 20),
             Center(
-              child: Text('Loading please wait...',style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),),
+              child: Text(
+                'Loading please wait...',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             )
           ],
         ),
