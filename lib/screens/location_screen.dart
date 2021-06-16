@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:weather_now/screens/city_screen.dart';
 import 'package:weather_now/screens/error_page.dart';
 import 'package:weather_now/services/weather.dart';
@@ -57,8 +58,8 @@ class _LocationScreenState extends State<LocationScreen> {
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,6 +90,34 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                 ],
+              ),
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  decoration: kInputTextFieldDecoration,
+                  onChanged: (value){
+                    cityName = value;
+                    // print(cityName);
+                  },
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  var weatherData;
+                  if(cityName != null){
+                    if(weatherData != null){
+
+                    }else{
+                      weatherData = await weather.getCityWeather(cityName);
+                      updateUI(weatherData);
+                    }
+                  }
+                },
+                child: Text(
+                  'Get Weather',
+                  style: kButtonTextStyle,
+                ),
               ),
               Spacer(),
               Padding(
