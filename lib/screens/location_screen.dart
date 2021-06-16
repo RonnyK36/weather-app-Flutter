@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:weather_now/screens/city_screen.dart';
+import 'package:weather_now/screens/error_page.dart';
 import 'package:weather_now/services/weather.dart';
 import 'package:weather_now/utilities/constants.dart';
 
@@ -26,13 +28,16 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
+      if(weatherData == null){
+        return ErrorPage();
+      }else {
         double temp = weatherData['main']['temp'];
         temperature = temp.toInt();
         tempMessage = weather.getMessage(temperature);
         var condition = weatherData['weather'][0]['id'];
         weatherIcon = weather.getWeatherIcon(condition);
         cityName = weatherData['name'];
-      });
+      }});
     print(temperature);
     print(weatherData);
   }
@@ -59,14 +64,20 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Route route = MaterialPageRoute(builder: (context) => CityScreen());
+                      Navigator.push(context, route);
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,

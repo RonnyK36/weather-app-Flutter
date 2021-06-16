@@ -26,20 +26,23 @@ class _CityScreenState extends State<CityScreen> {
                 // ignore: deprecated_member_use
                 child: TextButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color(0xff902426))
-                  ),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.white)),
                   onPressed: () {},
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 50.0,
+                    size: 20.0,
                   ),
                 ),
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  decoration: kInputTextFieldDecoration,
+                ),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {},
                 child: Text(
                   'Get Weather',
